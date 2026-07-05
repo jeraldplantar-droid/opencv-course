@@ -1,14 +1,25 @@
 #pylint:disable=no-member
 
+from pathlib import Path
+
 import cv2 as cv
 
-img = cv.imread('../Resources/Photos/group 1.jpg')
-cv.imshow('Group of 5 people', img)
+base_dir = Path(__file__).resolve().parent.parent
+img_path = base_dir / 'Resources' / 'Photos' / 'avengers.jpg'
+haar_path = Path(__file__).resolve().parent / 'haar_face.xml'
+
+img = cv.imread(str(img_path))
+if img is None:
+    raise FileNotFoundError(f'Could not load image: {img_path}')
+
+cv.imshow('Avengers', img)
 
 gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-cv.imshow('Gray People', gray)
+cv.imshow('Gray Avengers', gray)
 
-haar_cascade = cv.CascadeClassifier('haar_face.xml')
+haar_cascade = cv.CascadeClassifier(str(haar_path))
+if haar_cascade.empty():
+    raise FileNotFoundError(f'Could not load cascade: {haar_path}')
 
 faces_rect = haar_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=1)
 

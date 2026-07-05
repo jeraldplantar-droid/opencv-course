@@ -1,20 +1,26 @@
 #pylint:disable=no-member
 
 import os
+from pathlib import Path
+
 import cv2 as cv
 import numpy as np
 
 people = ['Ben Afflek', 'Elton John', 'Jerry Seinfield', 'Madonna', 'Mindy Kaling']
-DIR = r'..Media Files\Faces\train'
+base_dir = Path(__file__).resolve().parent.parent
+DIR = base_dir / 'Resources' / 'Faces' / 'train'
+haar_path = Path(__file__).resolve().parent / 'haar_face.xml'
 
-haar_cascade = cv.CascadeClassifier('haar_face.xml')
+haar_cascade = cv.CascadeClassifier(str(haar_path))
+if haar_cascade.empty():
+    raise FileNotFoundError(f'Could not load cascade: {haar_path}')
 
 features = []
 labels = []
 
 def create_train():
     for person in people:
-        path = os.path.join(DIR, person)
+        path = os.path.join(str(DIR), person)
         label = people.index(person)
 
         for img in os.listdir(path):
@@ -44,6 +50,7 @@ face_recognizer = cv.face.LBPHFaceRecognizer_create()
 # Train the Recognizer on the features list and the labels list
 face_recognizer.train(features,labels)
 
-face_recognizer.save('face_trained.yml')
-np.save('features.npy', features)
-np.save('labels.npy', labels)
+output_dir = Path(__file__).resolve().parent
+face_recognizer.save(str(output_dir / 'face_trained.yml'))
+np.save(output_dir / 'features.npy', features)
+np.save(output_dir / 'labels.npy', labels)
