@@ -1,10 +1,19 @@
 #pylint:disable=no-member
 
+from pathlib import Path
+
 import cv2 as cv
 import numpy as np
 
-img = cv.imread('../Resources/Photos/cats.jpg')
-cv.imshow('Cats', img)
+base_dir = Path(__file__).resolve().parent.parent
+img_path = base_dir / 'Resources' / 'Photos' / 'astapogi.webp'
+
+img = cv.imread(str(img_path))
+if img is None:
+    raise FileNotFoundError(f'Could not load image: {img_path}')
+
+img = cv.resize(img, (700, 500))
+cv.imshow('astapogi', img)
 
 blank = np.zeros(img.shape, dtype='uint8')
 cv.imshow('Blank', blank)

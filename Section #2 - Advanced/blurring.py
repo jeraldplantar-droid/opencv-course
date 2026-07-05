@@ -1,9 +1,23 @@
 #pylint:disable=no-member
 
+from pathlib import Path
+
 import cv2 as cv
 
-img = cv.imread('../Resources/Photos/cats.jpg')
-cv.imshow('Cats', img)
+base_dir = Path(__file__).resolve().parent.parent
+img_path = base_dir / 'Resources' / 'Photos' / 'asta.jpg'
+
+img = cv.imread(str(img_path))
+if img is None:
+    raise FileNotFoundError(f'Could not load image: {img_path}')
+
+scale_percent = 50
+width = int(img.shape[1] * scale_percent / 100)
+height = int(img.shape[0] * scale_percent / 100)
+dim = (width, height)
+img = cv.resize(img, dim, interpolation=cv.INTER_AREA)
+
+cv.imshow('Asta', img)
 
 # Averaging
 average = cv.blur(img, (3,3))

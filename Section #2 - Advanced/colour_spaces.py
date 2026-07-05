@@ -1,10 +1,17 @@
 #pylint:disable=no-member
 
-import cv2 as cv
-import matplotlib.pyplot as plt
+from pathlib import Path
 
-img = cv.imread('../Resources/Photos/park.jpg')
-cv.imshow('Park', img)
+import cv2 as cv
+
+base_dir = Path(__file__).resolve().parent.parent
+img_path = base_dir / 'Resources' / 'Photos' / 'astalarge.jpg'
+
+img = cv.imread(str(img_path))
+if img is None:
+    raise FileNotFoundError(f'Could not load image: {img_path}')
+
+cv.imshow('Astalarge', img)
 
 # plt.imshow(img)
 # plt.show()
