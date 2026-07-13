@@ -1,9 +1,13 @@
 #pylint:disable=no-member
 
 import cv2 as cv
+from pathlib import Path
 
-# Read in an image
-img = cv.imread('../Resources/Photos/asta.jpg')
+base_dir = Path(__file__).resolve().parent.parent
+img_path = base_dir / 'Resources' / 'Photos' / 'asta.jpg'
+img = cv.imread(str(img_path))
+if img is None:
+    raise FileNotFoundError(f'Could not load image: {img_path}')
 cv.imshow('asta', img)
 
 # Converting to grayscale
@@ -33,3 +37,5 @@ cv.imshow('Resized', resized)
 # Cropping
 cropped = img[50:200, 200:400]
 cv.imshow('Cropped', cropped)
+
+cv.waitKey(0)

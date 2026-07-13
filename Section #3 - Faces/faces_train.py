@@ -6,9 +6,11 @@ from pathlib import Path
 import cv2 as cv
 import numpy as np
 
-people = ['Ben Afflek', 'Elton John', 'Jerry Seinfield', 'Madonna', 'Mindy Kaling']
 base_dir = Path(__file__).resolve().parent.parent
 DIR = base_dir / 'Resources' / 'Faces' / 'train'
+people = sorted([p.name for p in DIR.iterdir() if p.is_dir()])
+if not people:
+    raise FileNotFoundError(f'No training folders found in: {DIR}')
 haar_path = Path(__file__).resolve().parent / 'haar_face.xml'
 
 haar_cascade = cv.CascadeClassifier(str(haar_path))

@@ -21,7 +21,12 @@ haar_cascade = cv.CascadeClassifier(str(haar_path))
 if haar_cascade.empty():
     raise FileNotFoundError(f'Could not load cascade: {haar_path}')
 
-faces_rect = haar_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=1)
+faces_rect = haar_cascade.detectMultiScale(
+    gray,
+    scaleFactor=1.1,
+    minNeighbors=5,
+    minSize=(30, 30)
+)
 
 print(f'Number of faces found = {len(faces_rect)}')
 

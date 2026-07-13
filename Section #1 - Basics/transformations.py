@@ -1,9 +1,11 @@
-#pylint:disable=no-member
-
+from pathlib import Path
 import cv2 as cv
 import numpy as np
 
-img = cv.imread('../Resources/Photos/astalarge.jpg')
+base_dir = Path(__file__).resolve().parent.parent
+img_path = base_dir / 'Resources' / 'Photos' / 'astalarge.jpg'
+img = cv.imread(str(img_path))
+
 cv.imshow('Asta', img)
 
 # Translation
